@@ -10,6 +10,8 @@ var parent:Region = null
 var sides:Array = [0, 0, 0, 0, 0, 0]
 var connections:Array = []
 
+var defs:RegionDefs = RegionDefs.new()
+
 enum SIDE { LEFT, BACK, RIGHT, FRONT, TOP, BOTTOM }
 
 var combiner:CSGCombiner
@@ -42,7 +44,3 @@ func generate():
 		region.generate()
 	for path in paths:
 		path.generate()
-
-static func rand_from_avg(variance, avg):
-	var off = fmod(randf(), variance)
-	return avg * (1 + off)
