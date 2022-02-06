@@ -13,6 +13,8 @@ export (Resource) var pistol_shoot_sound
 export (Resource) var reload_sound
 export (Resource) var empty_sound
 
+export (float, 0, 2) var volume_scale = 1
+
 onready var shoot_sound = rifle_shoot_sound
 
 var weapon1_ammo = 30
@@ -230,7 +232,7 @@ func spawn_impact():
 func play_sound(sound, dB, delay):
 	var audio_node = AudioStreamPlayer.new()
 	audio_node.stream = sound
-	audio_node.volume_db = dB
+	audio_node.volume_db = dB / volume_scale
 	audio_node.pitch_scale = rand_range(0.95, 1.05)
 	get_tree().get_root().add_child(audio_node)
 	yield(get_tree().create_timer(delay), "timeout")

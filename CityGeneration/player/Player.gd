@@ -1,5 +1,7 @@
 extends KinematicBody
 
+export (bool) var infini_jump = false
+
 var mouse_sensitivity = 1
 var joystick_deadzone = 0.2
 
@@ -104,15 +106,15 @@ func _physics_process(delta):
 			current_speed = crouch_speed
 	
 	if Input.is_key_pressed(KEY_SPACE) or Input.is_joy_button_pressed(0, JOY_XBOX_A):
-		if is_on_floor() and can_jump:
-			snapped = false
-			can_jump = false
-			gravity_vec = Vector3.UP * jump_height
+		if can_jump:
+			if is_on_floor() or infini_jump:
+				snapped = false
+				can_jump = false or infini_jump
+				gravity_vec = Vector3.UP * jump_height
 	else:
 		can_jump = true
 	
 	if is_on_ceiling():
-		print("On Ceiling")
 		gravity_vec.y = 0
 	
 	if Input.is_key_pressed(KEY_CONTROL) or Input.is_key_pressed(KEY_C) or Input.is_joy_button_pressed(0, JOY_XBOX_B):

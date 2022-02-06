@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/geo/geo_region_neighborhood.gd" type="Script" id=1]
-[ext_resource path="res://World.gd" type="Script" id=2]
+[ext_resource path="res://scripts/World.gd" type="Script" id=2]
 [ext_resource path="res://player/Player.tscn" type="PackedScene" id=3]
 
 [sub_resource type="PlaneMesh" id=1]
@@ -18,7 +18,8 @@ script = ExtResource( 1 )
 size = Vector3( 100, 100, 100 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-transform = Transform( -0.753999, 0, -0.656875, 0, 1, 0, 0.656875, 0, -0.753999, 1, 1.0988, 1 )
+transform = Transform( -0.753999, 0, -0.656875, 0, 1, 0, 0.656875, 0, -0.753999, 1.30728, 1.0988, 1.62757 )
+infini_jump = true
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.43071 )
@@ -32,3 +33,40 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 50 )
 use_collision = true
 mesh = SubResource( 1 )
 material = SubResource( 2 )
+
+[node name="CSGBox3" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.95021, 2.5, -3 )
+width = 4.0
+height = 5.0
+depth = 6.0
+
+[node name="CSGBox" type="CSGBox" parent="CSGBox3"]
+operation = 2
+width = 3.5
+height = 4.5
+depth = 5.5
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+use_collision = true
+
+[node name="CSGBox2" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.5, -3 )
+width = 4.0
+height = 5.0
+depth = 6.0
+
+[node name="CSGBox" type="CSGBox" parent="CSGCombiner/CSGBox2"]
+operation = 2
+width = 3.5
+height = 4.5
+depth = 5.5
+
+[node name="CSGBox2" type="CSGBox" parent="CSGCombiner/CSGBox2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.908165, 3 )
+operation = 2
+width = 1.5
+height = 3.0
+depth = 0.5
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.892239, 0.133975, -0.43123, 0, 0.954973, 0.296692, 0.451563, -0.26472, 0.852065, 0, 0, 0 )

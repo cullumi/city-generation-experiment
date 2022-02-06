@@ -13,7 +13,6 @@ continuous_cd = true
 [node name="MeshInstance" type="MeshInstance" parent="."]
 mesh = ExtResource( 1 )
 material/0 = null
-material/1 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 1 )
