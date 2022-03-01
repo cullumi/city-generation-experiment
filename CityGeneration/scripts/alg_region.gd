@@ -22,9 +22,10 @@ const Z = "z"
 const T = "t"
 const SUCCESS = true
 const FAILURE = false
+const DEBUG = true
+const NOBUG = false
 
 var debug_parent
-
 
 ### Routines
 
@@ -84,24 +85,38 @@ func create_stack(type, r:RegionVector, regions:Array, combiner:Node, axis:Strin
 		set_size_axes(region, [r.l[axis][a]], [axis])
 		set_position_axes(region, [r.p[axis][a]], [axis])
 
-func create_plane(type, r:RegionVector, regions:Array, combiner:Node, axis1:String=X, axis2:String=Z):
+func create_plane(type, r:RegionVector, regions:Array, combiner:Node, axis1:String=X, axis2:String=Z, debug:bool=NOBUG):
 	for a1 in range(0, r.c[axis1]):
 		for a2 in range(0, r.c[axis2]):
 			var region:Region = type.new()
 			regions.append(region)
 			combiner.add_child(region)
+			var l1 = r.l[axis1][a1]
+			var l2 = r.l[axis2][a2]
+			var p1 = r.p[axis1][a1]
+			var p2 = r.p[axis2][a2]
+			if debug: print("Plane:", 
+				"\t%6.2f" % p1, " -> %6.2f" % (p1+l1), "\t", axis1.to_upper(), "\t%6.2f\n" % l1,
+				"      \t%6.2f" % p2, " -> %6.2f" % (p2+l2), "\t", axis2.to_upper(), "\t%6.2f" % l2)
 			set_size_axes(region, [r.l[axis1][a1], r.l[axis2][a2]], [axis1, axis2])
 			set_position_axes(region, [r.p[axis1][a1], r.p[axis2][a2]], [axis1, axis2])
 
-func create_spans(type, r:RegionVector, regions:Array, combiner:Node, axes:Array=[X, Y, Z]):
+func create_spans(type, r:RegionVector, regions:Array, combiner:Node, axes:Array=[X, Y, Z], debug:bool=NOBUG):
+	if debug: print("----------------------------------------------------")
 	for axis in axes:
 		create_span(type, r, axis, regions, combiner)
 
-func create_span(type, r:RegionVector, axis:String, regions:Array, combiner:Node):
+func create_span(type, r:RegionVector, axis:String, regions:Array, combiner:Node, debug:bool=NOBUG):
 	for aa in range(0, r.c[axis]):
 		var region = type.new()
 		regions.append(region)
 		combiner.add_child(region)
+		var p = r.p[axis][aa]
+		var v = r.l[axis][aa]
+		if debug: print("Span  \t", 
+			"%6.2f" % p[axis], " -> %6.2f" % (p[axis]+v[axis]), "\t",
+			axis.to_upper(), "\t",
+			"%6.2f" % r.l[axis][aa][axis])
 		region.set_size(r.l[axis][aa])
 		region.set_position(r.p[axis][aa])
 
@@ -165,11 +180,11 @@ func perfect_grid(parent:Region, d:RegionVectors=null, const_axis:String=Y) -> R
 
 # Aisles
 #func aisle_path(span_size:float, offset:float, p:RegionVector, path_def:RegionDef, axis:String=X, const_axis:String=Y, span_axis:String=Z) -> float:
-func aisle_path(args:AlgArgs) -> float:
+func aisle_path(args:AlgArgs, debug:bool=false) -> float:
 	var path_def = args.defs.path
 	var p = args.d.p
 	var axis = args.axis
-	var const_axis = args.axis
+	var const_axis = args.const_axis
 	var span_axis = args.span_axis
 	
 	var aisle_width = rand_from_avg(path_def.variance[axis], path_def.avg_size[axis])
@@ -179,10 +194,15 @@ func aisle_path(args:AlgArgs) -> float:
 	var pos = Axes.vector3([args.ta], [axis])
 	p.p[axis].append(pos)
 	p.c[axis] += 1
+	if debug: print("Path  \t",
+		("%6.2f" % args.ta), " -> ", ("%6.2f" % (args.ta + aisle_width)), "\t",
+		axis.to_upper(), "\t",
+		("%6.2f" % aisle_width), "\t",
+		size)
 	return aisle_width
 
 #func aisle_region(offset:float, r:RegionVector, reg_defs:RegionDef, axis:String=X) -> float:
-func aisle_region(args:AlgArgs) -> float:
+func aisle_region(args:AlgArgs, debug:bool=NOBUG) -> float:
 	var reg_defs:RegionDef = args.defs.region
 	var r:RegionVector = args.d.r
 	var axis:String = args.axis
@@ -191,22 +211,20 @@ func aisle_region(args:AlgArgs) -> float:
 	r.l[axis].append(region_length)
 	r.p[axis].append(args.ta)
 	r.c[axis] += 1
+	if debug: print("Region\t",
+		("%6.2f" % args.ta), " -> ", ("%6.2f" % (args.ta + region_length)), "\t",
+		axis.to_upper(), "\t",
+		("%6.2f" % region_length))
 	return region_length
 
 func aisles(parent:Region, d:RegionVectors=null, axis:String=X, const_axis:String=Y, span_axis:String=Z) -> RegionVectors:
 	if d == null: d = new_region_vectors()
-	var defs:RegionDefs = parent.defs
 	
 	var args = AlgArgs.new(parent, d)
 	args.set_sizes(["span"],[parent.size[span_axis]])
 	args.set_axes(["", "const", "span"], [axis, const_axis, span_axis])
 	
 	axis_loop(0, parent.size[axis], ["aisle_path", "aisle_region"], args)
-#	var a:int = 0
-#	while (a < parent.size[axis]):
-#		var ta = a
-#		ta += aisle_path(parent.size[span_axis], ta, d.p, defs.path, axis, const_axis, span_axis)
-#		a = ta + aisle_region(ta, d.r, defs.region, axis)
 	return d
 
 ## Definition Algorithm Helpers

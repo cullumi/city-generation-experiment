@@ -13,6 +13,7 @@ var parent:Region = null
 var sides:Array = [0, 0, 0, 0, 0, 0]
 var connections:Array = []
 var defs:RegionDefs = RegionDefs.new()
+var algorithms:Array = []
 
 var default_offset = Vector3()
 
@@ -36,21 +37,31 @@ func _enter_tree():
 	path_combiner = add_combiner("Path")
 	local_combiner = add_combiner("Local")
 
+# Algorithm Execution
+
+func execute_algorithms():
+	for algorithm in algorithms:
+		execute_algorithm(algorithm)
+
+func execute_algorithm(alg_name:String):
+	var result = RegionAlgorithms.call(alg_name, self)
+	if (result is GDScriptFunctionState):
+		result = yield(result, "completed")
+
 # Generation
-func generate():
+func generate_regions(regions:Array) -> bool:
 	var active_regions = false
 	for region in regions:
 		region.generate()
 		Count.increment("subs")
 		if region.active: active_regions = true
-	var active_paths = false
-	for path in paths:
-		path.generate()
-		Count.increment("subs")
-		if path.active: active_paths = true
-	var active_locals = false
-	for local in locals:
-		if local is CSGShape: active_locals = true
+	return active_regions
+
+func generate():
+	execute_algorithms()
+	var active_regions = generate_regions(regions)
+	var active_paths = generate_regions(paths)
+	var active_locals = locals_active(locals)
 	set_active([active_regions, active_paths, active_locals])
 	assert_activated_correctly(active_regions, active_paths, active_locals)
 	if (active):
@@ -91,6 +102,13 @@ func add_combiner(c_name:String="Combiner", p_node:Node=self):
 	return combiner
 
 # Combiner Activation
+
+func locals_active(locals):
+	var active_locals = false
+	for local in locals:
+		if local is CSGShape: active_locals = true
+	return active_locals
+
 func make_active(type:String, val:bool):
 	var key = type+"_combiner"
 	self[key].use_collision = val

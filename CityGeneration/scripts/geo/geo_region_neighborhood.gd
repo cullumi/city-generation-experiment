@@ -1,6 +1,6 @@
 extends Region
 
-class_name NeighborhoodRegion
+#class_name NeighborhoodRegion
 
 func _init():
 	name = "NeighborhoodRegion"

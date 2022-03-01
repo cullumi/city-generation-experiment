@@ -38,8 +38,9 @@ static func copy_to(src_vector, dst_vector, axes:Array=all_axes()) -> Vector3:
 		dst_vector[axis] = src_vector[axis]
 	return dst_vector
 
-static func vector3(vals:Array, axes=all_axes()) -> Vector3:
+static func vector3(vals:Array, axes=all_axes(), debug:bool=false) -> Vector3:
 	var vector = Vector3()
 	for a in range(0, vals.size()):
 		vector[axes[a]] = vals[a]
+	if debug: print(vals, " -> ", vector, "\t", axes)
 	return vector

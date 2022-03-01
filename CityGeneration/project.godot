@@ -34,6 +34,26 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/Utilities/Convert.gd"
 }, {
+"base": "Def",
+"class": "DecorDef",
+"language": "GDScript",
+"path": "res://scripts/types/definitions/def_decor.gd"
+}, {
+"base": "Reference",
+"class": "DecorDefs",
+"language": "GDScript",
+"path": "res://scripts/types/definitions/defs_decor.gd"
+}, {
+"base": "Reference",
+"class": "Def",
+"language": "GDScript",
+"path": "res://Def.gd"
+}, {
+"base": "Reference",
+"class": "Defs",
+"language": "GDScript",
+"path": "res://Defs.gd"
+}, {
 "base": "Region",
 "class": "FloorRegion",
 "language": "GDScript",
@@ -42,7 +62,7 @@ _global_script_classes=[ {
 "base": "Region",
 "class": "NeighborhoodRegion",
 "language": "GDScript",
-"path": "res://scripts/geo/geo_region_neighborhood.gd"
+"path": "res://ngeo_neighborhood.gd"
 }, {
 "base": "Region",
 "class": "PathRegion",
@@ -54,12 +74,12 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/geo/geo_region.gd"
 }, {
-"base": "Reference",
+"base": "Def",
 "class": "RegionDef",
 "language": "GDScript",
 "path": "res://scripts/types/definitions/def_region.gd"
 }, {
-"base": "Reference",
+"base": "Defs",
 "class": "RegionDefs",
 "language": "GDScript",
 "path": "res://scripts/types/definitions/defs_region.gd"
@@ -90,9 +110,19 @@ _global_script_classes=[ {
 "path": "res://scripts/geo/geo_region_structure.gd"
 }, {
 "base": "Reference",
+"class": "TestData",
+"language": "GDScript",
+"path": "res://TestData.gd"
+}, {
+"base": "Reference",
 "class": "Vector4",
 "language": "GDScript",
 "path": "res://scripts/types/algorithms/Vector4.gd"
+}, {
+"base": "Reference",
+"class": "WorldDefs",
+"language": "GDScript",
+"path": "res://WorldDefs.gd"
 } ]
 _global_script_class_icons={
 "AlgArgs": "",
@@ -100,6 +130,10 @@ _global_script_class_icons={
 "Axes": "",
 "Axis": "",
 "Convert": "",
+"DecorDef": "",
+"DecorDefs": "",
+"Def": "",
+"Defs": "",
 "FloorRegion": "",
 "NeighborhoodRegion": "",
 "PathRegion": "",
@@ -111,7 +145,9 @@ _global_script_class_icons={
 "RoomRegion": "",
 "Side": "",
 "StructureRegion": "",
-"Vector4": ""
+"TestData": "",
+"Vector4": "",
+"WorldDefs": ""
 }
 
 [application]

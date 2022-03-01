@@ -13,12 +13,13 @@ func _enter_tree():
 
 func generate():
 	Count.increment("paths")
-	body.translation.x = size.x / 2
-	body.translation.y = size.y / 2
-	body.translation.z = size.z / 2
-	body.width = size.x
-	body.height = size.y
-	body.depth = size.z
+	align_box(body, size/2)
+#	body.translation.x = size.x / 2
+#	body.translation.y = size.y / 2
+#	body.translation.z = size.z / 2
+#	body.width = size.x
+#	body.height = size.y
+#	body.depth = size.z
 	body.material = SpatialMaterial.new()
 	body.material.albedo_color = Color.brown
 	.generate()

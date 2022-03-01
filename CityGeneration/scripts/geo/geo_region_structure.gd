@@ -5,6 +5,7 @@ class_name StructureRegion
 var body:CSGBox
 var region_negatives:Array = []
 var windows:Array = []
+var winscale:Vector3 = Vector3(1, 1, 1)
 
 # Initialization
 
@@ -22,7 +23,7 @@ func _enter_tree():
 
 func generate():
 	Count.increment("structures")
-	default_offset = Vector3(0, size.y/2, 0)
+	default_offset = Vector3(0, size.y/2, 0) # Used by floor negatives and windows.
 	align_box(body)
 	var result = RegionAlgorithms.skyscraper(self)
 	if (result is GDScriptFunctionState):
@@ -54,7 +55,6 @@ func generate_windows():
 func add_window(region:Region, side:Side=Side.new(Side.FRONT)):
 	var window:CSGShape = add_csg_box(body)
 	window.operation = CSGShape.OPERATION_SUBTRACTION
-	var winscale:Vector3 = Vector3(0.9, 0.75, 0.9)
 	var margins = defs.region.margins
 	var rsize = region.size
 	var axis = side.axis

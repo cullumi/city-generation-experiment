@@ -70,3 +70,5 @@ depth = 0.5
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.892239, 0.133975, -0.43123, 0, 0.954973, 0.296692, 0.451563, -0.26472, 0.852065, 0, 0, 0 )
+
+[node name="CSGBox2" type="CSGBox" parent="."]
