@@ -1,5 +1,7 @@
 extends Node
 
+# Named "Count" in Autoload
+
 var counters = {}
 func make_counters(keys):
 	for key in keys:

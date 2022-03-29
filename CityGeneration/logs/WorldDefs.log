@@ -1,0 +1,321 @@
+([Reference:1547])
+	root_feature: districts
+	provinces: (Dictionary)
+	counties: (Dictionary)
+	cities: (Dictionary)
+	districts: (Dictionary)
+		big-city: ([Reference:1549])
+			name: big-city
+			region: ([Reference:1550])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0, 0, 0)
+				avg_size: (50, 100, 50)
+				min_size: (1, 1, 1)
+				types: [[Reference:1553], [Reference:1557]]
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			path: ([Reference:1551])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (6.096, 0.0762, 6.096)
+				min_size: (1, 1, 1)
+				types: [[Reference:1569]]
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			decoration: ([Reference:1552])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			t_class: ([GDScript:1244])
+
+			color: 1,1,1,1
+			algorithms: [cityscape]
+	neighborhoods: (Dictionary)
+		big-city: ([Reference:1553])
+			name: big-city
+			region: ([Reference:1554])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0.5, 0.5)
+				avg_size: (8.2296, 20.573999, 8.2296)
+				min_size: (1, 1, 1)
+				types: [[Reference:1573]]
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			path: ([Reference:1555])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (3.048, 0.0762, 3.048)
+				min_size: (1, 1, 1)
+				types: [[Reference:1561]]
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			decoration: ([Reference:1556])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			t_class: ([GDScript:1260])
+
+			color: 1,1,1,1
+			algorithms: [cityscape]
+		small-city: ([Reference:1557])
+			name: small-city
+			region: ([Reference:1558])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0.5, 0.5)
+				avg_size: (4.1148, 10.287, 4.1148)
+				min_size: (1, 1, 1)
+				types: [[Reference:1573]]
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			path: ([Reference:1559])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1.524, 0.0762, 1.524)
+				min_size: (1, 1, 1)
+				types: [[Reference:1565]]
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			decoration: ([Reference:1560])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			t_class: ([GDScript:1260])
+
+			color: 1,1,1,1
+			algorithms: [cityscape]	paths: (Dictionary)
+		sidewalk: ([Reference:1561])
+			name: sidewalk
+			region: ([Reference:1562])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0.5, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			path: ([Reference:1563])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			decoration: ([Reference:1564])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			t_class: ([GDScript:1261])
+
+			color: 0.75,0.75,0.75,1
+			algorithms: []
+		dirtpath: ([Reference:1565])
+			name: dirtpath
+			region: ([Reference:1566])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0.5, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			path: ([Reference:1567])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			decoration: ([Reference:1568])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			t_class: ([GDScript:1261])
+
+			color: 0.65,0.16,0.16,1
+			algorithms: []
+		avenue: ([Reference:1569])
+			name: avenue
+			region: ([Reference:1570])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0.5, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			path: ([Reference:1571])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			decoration: ([Reference:1572])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			t_class: ([GDScript:1261])
+
+			color: 0.66,0.66,0.66,1
+			algorithms: []	structures: (Dictionary)
+		big-city: ([Reference:1573])
+			name: big-city
+			region: ([Reference:1574])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 3.6576, 1)
+				min_size: (1, 1, 1)
+				types: [[Reference:1577]]
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			path: ([Reference:1575])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			decoration: ([Reference:1576])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			t_class: ([GDScript:1262])
+
+			color: 1,1,1,1
+			algorithms: [skyscraper]
+	floors: (Dictionary)
+		big-city: ([Reference:1577])
+			name: big-city
+			region: ([Reference:1578])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0.5, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: [[Reference:1581]]
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			path: ([Reference:1579])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			decoration: ([Reference:1580])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			t_class: ([GDScript:1264])
+
+			color: 1,1,1,1
+			algorithms: []
+	rooms: (Dictionary)
+		big-city: ([Reference:1581])
+			name: big-city
+			region: ([Reference:1582])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0.5, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			path: ([Reference:1583])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			decoration: ([Reference:1584])
+				spacing: (0.5, 0.5, 0.5)
+				margins: (0.5, 0.5, 0.5)
+				variance: (0.5, 0, 0.5)
+				avg_size: (1, 1, 1)
+				min_size: (1, 1, 1)
+				types: []
+				vectors: [spacing, margins, variance, avg_size, min_size]
+			t_class: ([GDScript:1265])
+
+			color: 1,1,1,1
+			algorithms: []
+	default_type: (Dictionary)
+		region: 
+		path: 
+		decoration: 
+		class: ([GDScript:1244])
+
+		color: 1,1,1,1
+		algorithms: []	default_region: (Dictionary)
+		spacing: (0.5, 0.5, 0.5)
+		margins: (0.5, 0.5, 0.5)
+		variance: (0.5, 0.5, 0.5)
+		avg_size: (1, 1, 1)
+		min_size: (1, 1, 1)
+		types: []	default_path: (Dictionary)
+		spacing: (0.5, 0.5, 0.5)
+		margins: (0.5, 0.5, 0.5)
+		variance: (0.5, 0, 0.5)
+		avg_size: (1, 1, 1)
+		min_size: (1, 1, 1)
+		types: []	default_decoration: (Dictionary)
+		spacing: (0.5, 0.5, 0.5)
+		margins: (0.5, 0.5, 0.5)
+		variance: (0.5, 0, 0.5)
+		avg_size: (1, 1, 1)
+		min_size: (1, 1, 1)
+		types: []	feature_keys: [provinces, counties, cities, districts, neighborhoods, paths, structures, floors, rooms]
+	feature_hierarchy: (Dictionary)
+		provinces: (Dictionary)
+			region: [counties]
+			path: [paths]		counties: (Dictionary)
+			region: [cities]
+			path: [paths]		cities: (Dictionary)
+			region: [districts]
+			path: [paths]		districts: (Dictionary)
+			region: [neighborhoods]
+			path: [paths]		neighborhoods: (Dictionary)
+			region: [structures]
+			path: [paths]		structures: (Dictionary)
+			region: [floors]
+			path: [paths]		floors: (Dictionary)
+			region: [rooms]
+			path: [paths]		rooms: (Dictionary)

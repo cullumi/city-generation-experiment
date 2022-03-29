@@ -1,18 +1,23 @@
 extends Spatial
 
-onready var base_region:Region = $DistrictRegion
-onready var world_defs:WorldDefs = WorldDefs.new()
+var base_region:Region = StructureRegion.new()
+var world_defs:WorldDefs = WorldDefs.new()
 
-func _ready():
+func _init():
 	Count.make_counters([
 		"regions", "regions_active", "regions_inactive", 
 		"paths", "structures", "floors", "rooms",
 		"paths_active", "structures_active", "floors_active", "rooms_active",
 		"locals",
 	])
-	base_region.type = world_defs.get_typeDef(base_region.feature_name)
+	add_child(base_region)
+	base_region.size = Vector3(10, 30, 10)
+	base_region.position += Vector3(10, 0, 10)
+
+func _ready():
+	base_region.type = world_defs.get_typeDef("structures")
 	var result = base_region.generate()
-	if result is GDScriptFunctionState:
+	if result == GDScriptFunctionState:
 		result = yield(result, "completed")
 	print("\n\nResults:")
 	Count.pop_all()
@@ -30,4 +35,4 @@ func _input(event):
 		get_tree().reload_current_scene()
 	elif event.is_action_pressed("debug"):
 		print("debug")
-		add_child(CSGBox.new(), true)
+		base_region.local_combiner.add_child(CSGBox.new(), true)

@@ -21,6 +21,7 @@ script = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0 )
 
 [node name="Camera" type="Camera" parent="Head"]
+far = 500.0
 
 [node name="Shoot" parent="Head/Camera" instance=ExtResource( 5 )]
 volume_scale = 0.25

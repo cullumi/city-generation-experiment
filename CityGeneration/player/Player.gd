@@ -5,15 +5,15 @@ export (bool) var infini_jump = false
 var mouse_sensitivity = 1
 var joystick_deadzone = 0.2
 
-var run_speed = 6 # Running speed in m/s
+export (float, 0, 18) var run_speed = 6 # Running speed in m/s
 var walk_speed = run_speed / 2
 var crouch_speed = run_speed / 3
-var jump_height = 4
+export (float, 0, 20) var jump_height = 4
 
 var current_speed = run_speed
 
-var ground_acceleration = 10
-var air_acceleration = 5
+export (float, 0, 30) var ground_acceleration = 10
+export (float, 0, 15) var air_acceleration = 5
 var acceleration = air_acceleration
 
 var direction = Vector3()

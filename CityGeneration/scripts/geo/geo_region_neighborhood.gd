@@ -1,23 +1,24 @@
+
 extends Region
 
-#class_name NeighborhoodRegion
+class_name NeighborhoodRegion
 
-func _init():
-	name = "NeighborhoodRegion"
-	defs.set_all("variance", 0.5)
-	defs.path.variance.y = 0
-	defs.path.type = PathRegion
-	defs.path.avg_size.y = Convert.ft_to_m(0.25)
-	defs.path.avg_size.x = Convert.ft_to_m(10*2)
-	defs.path.avg_size.z = Convert.ft_to_m(10*2)
-	defs.region.type = StructureRegion
-	defs.region.avg_size.y = Convert.ft_to_m(45*3)
-	defs.region.avg_size.x = Convert.ft_to_m(18*3)
-	defs.region.avg_size.z = Convert.ft_to_m(18*3)
+var body:CSGBox
+
+func _init(_new_type:TypeDef=null):
+	name = "Neighborhood"
+
+#func _enter_tree():
+#	body = add_csg_box("body")
+#	set_active(false, [LOCAL])
+#	body.use_collision = false
+#	body.material = SpatialMaterial.new()
+#	body.material.albedo_color = Color.red
+#	body.material.albedo_color.a *= 0.5
+#	body.material.flags_transparent = true
 
 func generate():
-	var result = RegionAlgorithms.cityscape(self)
-	if (result is GDScriptFunctionState):
-		result = yield(result, "completed")
-#	RegionAlgorithms.verticalcity(self)
+#	self.position.y += size.y/2
+#	default_offset = Vector3(0, size.y/2, 0)
+#	align_box(body)
 	.generate()

@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://scripts/geo/geo_region_neighborhood.gd" type="Script" id=1]
 [ext_resource path="res://scripts/World.gd" type="Script" id=2]
 [ext_resource path="res://player/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/geo/geo_region.gd" type="Script" id=4]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 100, 100 )
@@ -13,13 +13,18 @@ albedo_color = Color( 0.109804, 0.788235, 0.231373, 1 )
 [node name="World" type="Spatial"]
 script = ExtResource( 2 )
 
-[node name="NeighborhoodRegion" type="Spatial" parent="."]
-script = ExtResource( 1 )
-size = Vector3( 100, 100, 100 )
+[node name="DistrictRegion" type="Spatial" parent="."]
+script = ExtResource( 4 )
+size = Vector3( 200, 100, 200 )
+node_name = "District"
+feature_name = "districts"
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 transform = Transform( -0.753999, 0, -0.656875, 0, 1, 0, 0.656875, 0, -0.753999, 1.30728, 1.0988, 1.62757 )
 infini_jump = true
+run_speed = 12.0
+ground_acceleration = 20.0
+air_acceleration = 10.0
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.43071 )

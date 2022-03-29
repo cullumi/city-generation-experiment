@@ -4,115 +4,153 @@ class_name Region
 
 # Parameters
 export (Vector3) var size = Vector3() setget set_size
+export (String) var node_name = "Region"
+export (String) var feature_name = "regions"
 var position:Vector3 = Vector3() setget set_position
-var corner_position:Vector3 = Vector3() setget set_corner_position, get_corner_position
+var corner_position:Vector3 = Vector3() setget set_corner_position
+var corner_offset:Vector3 = Vector3() setget , get_corner_offset
 var paths:Array = []
 var regions:Array = []
 var locals:Array = []
 var parent:Region = null
 var sides:Array = [0, 0, 0, 0, 0, 0]
 var connections:Array = []
-var defs:RegionDefs = RegionDefs.new()
-var algorithms:Array = []
+var post_generators:Array = []
+var type:TypeDef = TypeDef.new()
 
 var default_offset = Vector3()
+var generated:bool = false
 
 # Constants
 const PATH = "path"
 const REGION = "region"
 const LOCAL = "local"
+const debug_name = "Structure"
 
 # Combiners
-var region_combiner:CSGCombiner
-var path_combiner:CSGCombiner
+var region_combiner:Spatial
+var path_combiner:Spatial
 var local_combiner:CSGCombiner
+const combiners:Array = []
 var active = false
 
 # Iniitialization
-func _init():
-	name = "Region"
+func _init(new_type:TypeDef=type):
+	name = node_name
+	type = new_type
 
 func _enter_tree():
-	region_combiner = add_combiner("Region")
-	path_combiner = add_combiner("Path")
-	local_combiner = add_combiner("Local")
+	region_combiner = add_combiner("region")
+	path_combiner = add_combiner("path")
+	local_combiner = add_combiner("local")
 
 # Algorithm Execution
 
 func execute_algorithms():
-	for algorithm in algorithms:
-		execute_algorithm(algorithm)
+	for algorithm in type.algorithms:
+		var res = RegionAlgorithms.call(algorithm, self)
+		if res is GDScriptFunctionState: yield(res, "completed")
+#		yield(get_tree(), "idle_frame")
 
-func execute_algorithm(alg_name:String):
-	var result = RegionAlgorithms.call(alg_name, self)
-	if (result is GDScriptFunctionState):
-		result = yield(result, "completed")
+func execute_post_generators():
+	for gen in post_generators:
+		var res = call(gen)
+		if res is GDScriptFunctionState: yield(res, "completed")
+#		yield(get_tree(), "idle_frame")
 
 # Generation
-func generate_regions(regions:Array) -> bool:
+func generate_regions(g_regions:Array) -> bool:
 	var active_regions = false
-	for region in regions:
+	for region in g_regions:
 		region.generate()
-		Count.increment("subs")
 		if region.active: active_regions = true
+		yield(get_tree(), "idle_frame")
 	return active_regions
 
 func generate():
-	execute_algorithms()
-	var active_regions = generate_regions(regions)
-	var active_paths = generate_regions(paths)
+	generated = false
+	Count.increment("regions")
+	
+	var res = execute_algorithms()
+	if res is GDScriptFunctionState: yield(res, "completed")
+	
+	res = execute_post_generators()
+	if res is GDScriptFunctionState: yield(res, "completed")
+	
+	res = generate_regions(regions)
+	if res is GDScriptFunctionState: yield(res, "completed")
+	
+	res = generate_regions(paths)
+	if res is GDScriptFunctionState: yield(res, "completed")
+	
 	var active_locals = locals_active(locals)
-	set_active([active_regions, active_paths, active_locals])
-	assert_activated_correctly(active_regions, active_paths, active_locals)
+	set_active(active_locals, [LOCAL])
+	assert_activated_correctly(active_locals)
 	if (active):
-		Count.increment("subs_active")
+		Count.increment("regions_active")
 	else:
-		Count.increment("subs_inactive")
+		Count.increment("regions_inactive")
+	generated = true
 
-# Activation Assertions
-func assert_activated_correctly(ar, ap, al):
-	var check = ar or ap or al
-	assert(check == active, "Active doesn't match child combiners")
-	assert(region_combiner.use_collision == ar)
-	assert(path_combiner.use_collision == ap)
+# Assertions
+func assert_activated_correctly(al):
 	assert(local_combiner.use_collision == al)
 
+func assert_valid_locals():
+	for local in locals:
+		assert(local.width > 0)
+		assert(local.height > 0)
+		assert(local.depth > 0)
+
 # Setters
-func set_position(new_position:Vector3):
+func set_position(new_position:Vector3, looped:bool=false):
 	position = new_position
+	if not looped:
+		set_corner_position(new_position - (size/2), true)
+
+func set_corner_position(new_position:Vector3, looped:bool=false):
+	corner_position = new_position
 	translation = new_position
-
-func set_corner_position(new_position:Vector3):
-	var new_pos = (size/2) + new_position
-	self.position = new_pos
-
-func get_corner_position():
-	return self.position - (size/2)
+	if not looped:
+		set_position((size/2) + new_position, true)
 
 func set_size(new_size:Vector3):
 	size = new_size
+	self.corner_position = corner_position
+
+func get_corner_offset():
+	return corner_position - position
 
 # Combiner Addition
 func add_combiner(c_name:String="Combiner", p_node:Node=self):
-	var combiner = CSGCombiner.new()
+	var combiner
+	if c_name == "local":
+		combiner = CSGCombiner.new()
+		combiner.calculate_tangents = false
+		combiner.use_collision = false
+	else:
+		combiner = Spatial.new()
+	combiners.append(combiner)
 	combiner.name = c_name + " Combiner"
-	combiner.calculate_tangents = false
-	combiner.use_collision = false
-	p_node.add_child(combiner)
+
+	p_node.add_child(combiner, true)
 	return combiner
 
 # Combiner Activation
 
-func locals_active(locals):
+func locals_active(g_locals):
 	var active_locals = false
-	for local in locals:
-		if local is CSGShape: active_locals = true
+	for local in g_locals:
+		if local is CSGShape:
+			if local.use_collision:
+				active_locals = true
 	return active_locals
 
-func make_active(type:String, val:bool):
-	var key = type+"_combiner"
-	self[key].use_collision = val
-	self[key].calculate_tangents = val
+func make_active(ctype:String, val:bool):
+	if ctype == "local":
+		var key = ctype+"_combiner"
+		self[key].use_collision = val
+		self[key].calculate_tangents = val
 
 func set_active(val, subs:Array=[REGION, PATH, LOCAL]):
 	if val is Array:
@@ -125,16 +163,64 @@ func set_active(val, subs:Array=[REGION, PATH, LOCAL]):
 		active = val
 
 # CSG Helpers
-func add_csg_box(p_node=local_combiner):
+func add_csg_box(n_name:String="CSGBox", p_node:Node=local_combiner):
 	var new_body = CSGBox.new()
+	Count.increment("locals")
 	new_body.use_collision = true
-	p_node.add_child(new_body)
+	new_body.name = n_name
+	p_node.add_child(new_body, true)
 	locals.append(new_body)
 	return new_body
 
-func align_box(box:CSGBox, b_offset:Vector3=default_offset, b_size:Vector3=size):
-#	box.translation = (b_size / 2) + b_offset
+func align_box(box:CSGBox, b_offset:Vector3=-self.corner_offset, b_size:Vector3=size):
 	box.translation = b_offset
 	box.width = b_size.x
 	box.height = b_size.y
 	box.depth = b_size.z
+
+# Verification
+func locals_valid():
+	for local in locals:
+		if local.width <= 0 or local.height <= 0 or local.depth <= 0:
+			return false
+	return true
+func local_combiner_valid():
+	var combiner = local_combiner
+	var count:int = combiner.get_child_count()
+	if count == 0:
+		if combiner.calculate_tangents or combiner.use_collision:
+			return false
+	return true
+func lc_empty():
+	return local_combiner.get_child_count() == 0 or locals.empty()
+func lc_ls_same():
+	return local_combiner.get_child_count() == locals.size()
+func combiners_valid():
+	return local_combiner_valid()
+
+# Print Helpers
+func empty(boolean:bool): return "empty" if boolean else "full"
+func valid(boolean:bool): return "valid" if boolean else "invalid"
+func same(boolean:bool): return "same" if boolean else "diff"
+func act(boolean:bool): return "active" if boolean else "inactive"
+func region_print(indent:String="") -> String:
+	var string:String = ""
+	var lv:String = valid(locals_valid())
+	var cv:String = valid(combiners_valid())
+	var lce:String = empty(lc_empty())
+	var lcls:String = same(lc_ls_same())
+	var ra:String = act(active)
+	string += indent
+	string += "%s (%s/%s/%s/%s/%s){" % [name, lv, cv, lce, lcls, ra]
+	if locals.empty(): string += "}\n"
+	else: string += "\n"
+	indent += "\t"
+	for local in locals:
+		var vector = "(%5.2f, %5.2f, %5.2f)" % [local.width, local.height, local.depth]
+		string += indent + "\tlocal: " + vector + "\t" + local.name + "\n"
+	if not locals.empty(): string += indent + "}\n"
+	for region in regions:
+		string += region.region_print(indent)
+	for path in paths:
+		string += path.region_print(indent)
+	return string

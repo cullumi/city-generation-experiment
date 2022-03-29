@@ -1,14 +1,15 @@
-extends Reference
+extends DupReference
 
 class_name Defs
 
-var defs:Array = []
+const defs:Array = []
 
 func _init():
 	var properties:Array = get_property_list()
 	for prop in properties:
-		if prop.type == typeof(Def) and prop.usage == PROPERTY_USAGE_SCRIPT_VARIABLE:
-			defs.append(prop.name)
+		if prop.usage == PROPERTY_USAGE_SCRIPT_VARIABLE:
+			if self[prop.name] is Def:
+				defs.append(prop.name)
 
 func set_all(key:String, value):
 	for def in defs:

@@ -7,9 +7,9 @@ func ftm(value):
 
 # Type Wrapping
 
-var root_feature = "neighborhoods"
+var root_feature = "districts"
 
-var features = {
+var features:Dictionary = {
 	"provinces":provinces,
 	"counties":counties,
 	"cities":cities,
@@ -21,15 +21,15 @@ var features = {
 	"rooms":rooms,
 }
 
-var path_feature = "paths"
-var feature_hierarchy = {
-	"provinces":["counties"],
-	"counties":["cities"],
-	"cities":["districts"],
-	"neighborhoods":["structures"],
-	"structures":["floors"],
-	"floors":["rooms"],
-	"rooms":[],
+var feature_hierarchy:Dictionary = {
+	"provinces":		{"region":["counties"], 		"path":["paths"]},
+	"counties":			{"region":["cities"], 			"path":["paths"]},
+	"cities":			{"region":["districts"], 		"path":["paths"]},
+	"districts":		{"region":["neighborhoods"], 	"path":["paths"]},
+	"neighborhoods":	{"region":["structures"], 		"path":["paths"]},
+	"structures":		{"region":["floors"], 			"path":["paths"]},
+	"floors":			{"region":["rooms"], 			"path":["paths"]},
+	"rooms":			{},
 }
 
 
@@ -48,27 +48,60 @@ var cities = {
 }
 
 var districts = {
-	
+	"big-city": {
+		"region": {
+			"variance": Vector3(0, 0, 0),
+			"avg_size": Vector3(50, 100, 50),
+			"types":["big-city", "small-city"],
+		},
+		"path": {
+			"avg_size": ftm(Vector3(10,0.125,10)*2),
+			"types":["avenue"],
+		},
+		"class": Region,
+		"algorithms": ["cityscape"]
+	}
 }
 
 var neighborhoods = {
 	"big-city": {
 		"region": {
-			"avg_size": ftm(Vector3(18,45,18)*3),
-			"type": ["big-city"],
+			"avg_size": ftm(Vector3(18,45,18)*3*.5),
+			"types": ["big-city"],
 		},
 		"path": {
-			"avg_size": ftm(Vector3(10,0.125,10)*2),
-			"types":["big-city"],
+			"avg_size": ftm(Vector3(5,0.125,5)*2),
+			"types":["sidewalk"],
 		},
 		"class": NeighborhoodRegion,
-		"algorithms": ["cityscape"]
+		"algorithms": ["cityscape"],
+	},
+	"small-city": {
+		"region": {
+			"avg_size": ftm(Vector3(18,45,18)*3*.25),
+			"types": ["big-city"],
+		},
+		"path": {
+			"avg_size": ftm(Vector3(2.5,0.125,2.5)*2),
+			"types":["dirtpath"],
+		},
+		"class": NeighborhoodRegion,
+		"algorithms": ["cityscape"],
 	}
 }
 
 var paths = {
-	"big-city": {
-		"class": PathRegion
+	"sidewalk": {
+		"class": PathRegion,
+		"color": Color.gray,
+	},
+	"dirtpath": {
+		"class": PathRegion,
+		"color": Color.brown,
+	},
+	"avenue": {
+		"class": PathRegion,
+		"color": Color.darkgray,
 	}
 }
 
@@ -76,12 +109,12 @@ var structures = {
 	"big-city": {
 		"region": {
 			"variance": {"y":0},
-			"avg_size": {"y":ftm(8*15)},
+			"avg_size": {"y":ftm(8*1.5)},
 			"types": ["big-city"]
 		},
 		"class": StructureRegion,
 		"algorithms": ["skyscraper"]
-	}
+	},
 }
 
 var floors = {
@@ -108,7 +141,8 @@ var default_type = {
 	"path": default_path,
 	"decoration": default_decoration,
 	"class": Region,
-	"algorithms": []
+	"color": Color.white,
+	"algorithms": [],
 }
 
 var default_region = {
@@ -117,7 +151,7 @@ var default_region = {
 	"variance": Vector3.ONE * 0.5,
 	"avg_size": Vector3.ONE,
 	"min_size": Vector3.ONE,
-	"types": null
+	"types": [],
 }
 
 var default_path = {
@@ -126,7 +160,7 @@ var default_path = {
 	"variance": Vector3(1, 0, 1) * 0.5,
 	"avg_size": Vector3.ONE,
 	"min_size": Vector3.ONE,
-	"types": null
+	"types": [],
 }
 
 var default_decoration = {
@@ -135,5 +169,5 @@ var default_decoration = {
 	"variance": Vector3(1, 0, 1) * 0.5,
 	"avg_size": Vector3.ONE,
 	"min_size": Vector3.ONE,
-	"types": null
+	"types": [],
 }

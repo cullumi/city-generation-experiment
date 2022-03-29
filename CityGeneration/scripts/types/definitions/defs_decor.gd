@@ -1,4 +1,4 @@
-extends Reference
+extends Defs
 
 class_name DecorDefs
 
