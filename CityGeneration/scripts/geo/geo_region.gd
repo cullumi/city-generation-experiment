@@ -58,7 +58,34 @@ func execute_post_generators():
 		if res is GDScriptFunctionState: yield(res, "completed")
 #		yield(get_tree(), "idle_frame")
 
-# Generation
+# Threading
+#func start_generation_threads(g_regions:Array) -> Array:
+#	var threads:Array = []
+#	for region in g_regions:
+#		var thread = Thread.new()
+#		threads.append(thread)
+#		thread.start(region, "generate")
+#	return threads
+#
+#func end_generation_threads(threads:Array):
+#	while not threads.empty():
+#		for thread in threads:
+#			if not thread.is_alive():
+#				thread.wait_to_finish()
+#		yield(get_tree(), "idle_frame")
+#	print("test2")
+#
+## Generation
+#func generate_regions(g_regions:Array) -> bool:
+#	var threads:Array = start_generation_threads(g_regions)
+##	yield(end_generation_threads(threads), "completed")
+#	end_generation_threads(threads)
+#	print("test")
+#	var active_regions = false
+#	for region in g_regions:
+#		if region.active: active_regions = true
+#	return active_regions
+
 func generate_regions(g_regions:Array) -> bool:
 	var active_regions = false
 	for region in g_regions:
